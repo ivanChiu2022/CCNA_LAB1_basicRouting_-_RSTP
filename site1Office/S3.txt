@@ -1,0 +1,49 @@
+! config switch 2 --facing vlan 10 192.168.10.0/29 
+
+enable
+hostname S3
+config t
+
+
+! define vlan
+
+vlan 10 
+name it
+exit 
+
+vlan 20 
+name Office
+exit 
+
+vlan 99
+name native
+exit
+
+! define RSTP and root for vlan 10
+
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10 root primary
+
+! deinf trunk port
+
+interface range fa0/0 - fa0/2
+switchport mode trunk
+switchport trunk allowed vlan 10,20,99
+switchport trunk native vlan 99
+no shutdown
+exit
+
+! define access port 
+interface range fa0/3- fa0/4 
+switchport mode access
+switchport access vlan 10
+spanning-tree portfast
+spanning-tree bpduguard enable
+no shutdown
+exit
+
+!showdown unused port 
+
+interface range fa0/5 - fa0/11
+shutdown
+exit

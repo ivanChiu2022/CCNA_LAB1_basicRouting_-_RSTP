@@ -1,0 +1,42 @@
+Config S4
+
+
+
+enable 
+hostname S2-WH
+config t
+
+/*CREATE VLAN*/
+vlan 30
+name WH
+exit
+
+vlan 99
+name NATIVE
+exit
+
+/* interface setup*/
+interface fa0/0
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 30, 99
+no shutdown 
+exit
+
+
+interface range fa0/1, fa0/2
+switchport mode access
+switchport access vlan 30
+spanning-tree portfast
+no shutdown
+exit
+
+
+interface range fa0/3 - 16
+shutdown
+exit
+
+
+end
+
+

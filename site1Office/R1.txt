@@ -1,0 +1,54 @@
+! Config R1--Office
+
+enable
+hostname R1-OF
+config t
+
+! config interface
+! to ISP router
+
+interface se0/1
+ip interface 192.168.200.1 255.255.255.252
+no shutdown
+exit
+
+! to warehouse - PTP R2
+interface se0/0
+ip interface 192.168.9.2 255.255.255.252
+no shutdown
+exit
+
+! config Roas 192.168.10.0/20 and 192.168.20.0/29 */
+
+
+interface fa0/0
+no shutdown
+exit 
+
+interface fa0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.248
+exit
+
+interface fa0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.248
+exit
+
+!  config DHCP for VLAN20-Office
+
+
+ip dhcp excluded-address 192.168.20.1
+
+ip dhcp pool VLAN20 
+network 192.168.20.0 255.255.255.248
+default-router 192.168.20.1
+dns-server 8.8.8.8
+exit
+
+! routing
+
+ip route 192.168.30.0 255.255.255.248 192.168.0.1
+ip route 0.0.0.0 0.0.0.0 192.168.200.1
+
+

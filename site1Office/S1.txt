@@ -1,0 +1,37 @@
+! config Sw1 -- connecting to R1
+
+enable
+hostname Sw1
+config t 
+
+! define vlan 10 and vlan20 
+
+vlan 20
+name Office
+exit
+
+vlan 10
+name it
+exit 
+
+vlan 99
+name native
+exit
+
+!  config interface - trunk port 
+
+interface range fa0/0 - fa0/2
+switchport mode trunk
+switchport trunk allowed vlan 10,20, 99
+switchport trunk native vlan 99
+no shutdown
+exit
+
+! shutdown unuses port 
+
+interface ramge fa0/3 - fa0/11
+shutdown
+exit
+
+
+

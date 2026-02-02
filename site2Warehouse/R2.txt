@@ -1,0 +1,51 @@
+Config R2
+
+
+enable
+config t
+hostname R2-WH
+
+! interface setup
+interface se0/1
+ip address 192.168.100.1 255.255.255.252
+no shutdown
+exit
+
+
+interface se0/0
+ip address 192.168.0.1 255.255.255.252
+no shutdown
+exit
+
+
+interface fa0/0
+ip address 192.168.30.1 255.255.255.248
+no shutdown
+exit
+
+
+! routing
+
+
+ip route 0.0.0.0 0.0.0.0 192.168.100.2
+ip route 192.168.10.0 255.255.255.248 192.168.0.2
+ip route 192.168.20.0 255.255.255.248 192.168.0.2
+exit
+
+
+! Active DHCP
+
+
+ip dhcp excluded-address 192.168.30.1 192.168.30.2
+ip dhcp pool vlan 30
+network 192.168.30.0 255.255.255.248
+default-router 192.168.30.1
+dns-server 8.8.8.8
+exit
+
+
+end
+
+
+
+
